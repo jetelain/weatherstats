@@ -1,14 +1,14 @@
 ﻿using System.Diagnostics;
 using System.Text.Json.Serialization;
 
-namespace WeatherStats
+namespace WeatherStats.Stats
 {
     [DebuggerDisplay("{Avg} ({Min} to {Max})")]
     public sealed class MinMaxAvg
     {
         [JsonConstructor]
-        public MinMaxAvg(float min, float avg, float max) 
-        { 
+        public MinMaxAvg(float min, float avg, float max)
+        {
             Min = min;
             Avg = avg;
             Max = max;
@@ -34,7 +34,7 @@ namespace WeatherStats
             var total = 0d;
             var min = 0f;
             var max = 0f;
-            foreach(var v in values)
+            foreach (var v in values)
             {
                 if (!float.IsNaN(v))
                 {

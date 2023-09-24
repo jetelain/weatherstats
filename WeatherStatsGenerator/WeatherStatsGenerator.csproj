@@ -22,7 +22,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\mapkit\MapToolkit\MapToolkit.csproj" />
     <ProjectReference Include="..\WeatherStats\WeatherStats.csproj" />
   </ItemGroup>
 

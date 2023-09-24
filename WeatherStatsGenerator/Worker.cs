@@ -3,6 +3,7 @@ using System.Numerics;
 using PureHDF;
 using PureHDF.Selections;
 using WeatherStats;
+using WeatherStats.Stats;
 
 namespace WeatherStatsGenerator
 {
@@ -32,7 +33,7 @@ namespace WeatherStatsGenerator
             this.humidity = new float[timeCountAsInteger];
         }
 
-        public List<WeatherStatsPoint> Extract(ulong latIndex, bool[] mask, Stopwatch globalStopwatch)
+        public List<MonthWeatherStatsPoint> Extract(ulong latIndex, bool[] mask, Stopwatch globalStopwatch)
         {
             using var northward = files.Open(DataFiles.NorthwardWindFile);
             using var eastward = files.Open(DataFiles.EastwardWindFile);
@@ -49,7 +50,7 @@ namespace WeatherStatsGenerator
             Console.WriteLine($"{globalStopwatch.Elapsed}: Done read {latIndex} in {readStopwatch.ElapsedMilliseconds} msec");
 
             var maxLonIndex = (ulong)files.LonValues.Length;
-            var results = new List<WeatherStatsPoint>();
+            var results = new List<MonthWeatherStatsPoint>();
 
             for (ulong lonIndex = 0; lonIndex < maxLonIndex; ++lonIndex)
             {
@@ -77,7 +78,7 @@ namespace WeatherStatsGenerator
             return results;
         }
 
-        private WeatherStatsPoint Compute(ulong latIndex, ulong lonIndex, float[] dy, float[] dx, float[] temp, float[] dew)
+        private MonthWeatherStatsPoint Compute(ulong latIndex, ulong lonIndex, float[] dy, float[] dx, float[] temp, float[] dew)
         {
             for (int t = 0; t < timeCountAsInteger; ++t)
             {
@@ -88,10 +89,10 @@ namespace WeatherStatsGenerator
                 humidity[t] = VariableConvert.RelativeHumidity(VariableConvert.KelvinToCelcius(dew[t]), VariableConvert.KelvinToCelcius(temp[t]));
             }
 
-            return new WeatherStatsPoint(files.LatValues[latIndex], files.LonValues[lonIndex], WeatherStatsData.From(humidity, tempC, windSpeed, windAngle));
+            return new MonthWeatherStatsPoint(files.LatValues[latIndex], files.LonValues[lonIndex], MonthWeatherStatsData.From(humidity, tempC, windSpeed, windAngle));
         }
 
-        public List<WeatherStatsPoint> ExtractSlow(ulong latIndex, bool[] mask, Stopwatch globalStopwatch)
+        public List<MonthWeatherStatsPoint> ExtractSlow(ulong latIndex, bool[] mask, Stopwatch globalStopwatch)
         {
             using var northward = files.Open(DataFiles.NorthwardWindFile);
             using var eastward = files.Open(DataFiles.EastwardWindFile);
@@ -105,7 +106,7 @@ namespace WeatherStatsGenerator
 
             var maxLonIndex = (ulong)files.LonValues.Length;
 
-            var results = new List<WeatherStatsPoint>();
+            var results = new List<MonthWeatherStatsPoint>();
             for (ulong lonIndex = 0; lonIndex < maxLonIndex; ++lonIndex)
             {
                 if (!mask[lonIndex])

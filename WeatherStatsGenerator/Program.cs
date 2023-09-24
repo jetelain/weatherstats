@@ -1,15 +1,94 @@
 ﻿using System.Diagnostics;
 using System.Text.Json;
+using CommandLine;
 using PureHDF.Filters;
+using WeatherStats.Databases;
+using WeatherStats.Stats;
 
 namespace WeatherStatsGenerator
 {
     internal class Program
     {
-        static void Main(string[] args)
+        static int Main(string[] args)
+        {
+            try
+            {
+                return Parser.Default.ParseArguments<DigestOptions, AssembleOptions, QueryOptions>(args)
+                  .MapResult(
+                    (DigestOptions opts) => Digest(opts),
+                    (AssembleOptions opts) => Assemble(opts),
+                    (QueryOptions opts) => Query(opts),
+                    errs => 1);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+                return 2;
+            }
+        }
+
+        private static int Query(QueryOptions opts)
+        {
+            var db = WeatherStatsDatabase.Create(opts.AssemblyPath!);
+
+            var result = db.GetStats(opts.Latitude, opts.Longitude).Result;
+
+            return 0;
+        }
+
+        private static int Assemble(AssembleOptions opts)
+        {
+            var months = Enumerable.Range(1, 12).Select(i => i.ToString("00")).ToList();
+            var files = Directory.GetFiles(Path.Combine(opts.Path!, months[0]), "*.json").Select(f => Path.GetFileName(f)).ToList();
+            var result = new Dictionary<(int, int), List<YearWeatherStatsPoint>>();
+            foreach(var file in files)
+            {
+                Console.WriteLine(file);
+                var toAssemble = months
+                    .Select(m => Path.Combine(opts.Path!, m, file))
+                    .Select(f => File.ReadAllText(f))
+                    .Select(c => JsonSerializer.Deserialize<List<MonthWeatherStatsPoint>>(c)!)
+                    .ToList();
+
+                var count = toAssemble[0].Count;
+
+                for(int i = 0; i < count; ++i)
+                {
+                    var points = toAssemble.Select(r => r[i]).ToList();
+                    CheckLanLon(points[0].Latitude, points[0].Longitude, points.Skip(1));
+                    var assemblyPoint = new YearWeatherStatsPoint(points[0].Latitude, points[0].Longitude, points.Select(p => p.Data).ToArray());
+
+                    var cellIndex = WeatherStatsDatabase.GetCellIndex(points[0].Latitude, points[0].Longitude);
+                    if (!result.TryGetValue(cellIndex, out var cell))
+                    {
+                        result.Add(cellIndex, cell = new List<YearWeatherStatsPoint>());
+                    }
+                    cell.Add(assemblyPoint);
+                }
+            }
+            Directory.CreateDirectory(Path.Combine(opts.Path!, "assembly"));
+            foreach(var pair in result)
+            {
+                var name = WeatherStatsDatabase.GetCellFileName(pair.Key);
+                Console.WriteLine(name);
+                File.WriteAllText(Path.Combine(opts.Path!, "assembly", name), JsonSerializer.Serialize(pair.Value));
+            }
+            return 0;
+        }
+
+
+        private static void CheckLanLon(float latitude, float longitude, IEnumerable<MonthWeatherStatsPoint> enumerable)
+        {
+            if (enumerable.Any(p =>p.Latitude != latitude) || enumerable.Any(p => p.Longitude != longitude))
+            {
+                throw new InvalidOperationException();
+            }
+        }
+
+        private static int Digest(DigestOptions opts)
         {
             H5Filter.Register(new DeflateISALFilter());
-            var fileset = new DataFiles(args.Length > 0 ? args[0] : @"c:\temp\era5");
+            var fileset = new DataFiles(opts.Path!);
             var mask = GenerateMask(fileset);
             var options = new ParallelOptions();
             options.MaxDegreeOfParallelism = 10;
@@ -25,6 +104,7 @@ namespace WeatherStatsGenerator
                 }
             });
             sw1.Stop();
+            return 1;
         }
 
         private static string GetFileName(int latIndex, DataFiles fileset)

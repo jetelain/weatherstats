@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics;
 using System.Text.Json.Serialization;
 
-namespace WeatherStats
+namespace WeatherStats.Stats
 {
     [DebuggerDisplay("{Avg.Avg} ({Min.Avg} to {Max.Avg})")]
     public sealed class MinMaxAvgStats

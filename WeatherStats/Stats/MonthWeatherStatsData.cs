@@ -1,11 +1,11 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace WeatherStats
+namespace WeatherStats.Stats
 {
-    public class WeatherStatsData
+    public sealed class MonthWeatherStatsData
     {
         [JsonConstructor]
-        public WeatherStatsData(MinMaxAvg humidity, MinMaxAvgStats temperature, MinMaxAvgStats windSpeed, WindDirectionStats windDirection)
+        public MonthWeatherStatsData(MinMaxAvg humidity, MinMaxAvgStats temperature, MinMaxAvgStats windSpeed, WindDirectionStats windDirection)
         {
             Humidity = humidity;
             Temperature = temperature;
@@ -25,9 +25,9 @@ namespace WeatherStats
         [JsonPropertyName("wd")]
         public WindDirectionStats WindDirection { get; }
 
-        public static WeatherStatsData From(float[] humidity, float[] temperature, float[] windSpeed, WindDirection8[] windDirection)
+        public static MonthWeatherStatsData From(float[] humidity, float[] temperature, float[] windSpeed, WindDirection8[] windDirection)
         {
-            return new WeatherStatsData(
+            return new MonthWeatherStatsData(
                 MinMaxAvg.From(humidity),
                 MinMaxAvgStats.From(temperature),
                 MinMaxAvgStats.From(windSpeed),

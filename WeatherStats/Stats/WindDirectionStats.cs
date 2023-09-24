@@ -6,7 +6,7 @@ using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
-namespace WeatherStats
+namespace WeatherStats.Stats
 {
     [DebuggerDisplay("{Prevailing}")]
     public class WindDirectionStats
@@ -37,13 +37,13 @@ namespace WeatherStats
         }
 
         [JsonIgnore]
-        public WindDirection8 Prevailing 
-        { 
-            get 
+        public WindDirection8 Prevailing
+        {
+            get
             {
                 var max = Probability.Max();
                 return (WindDirection8)Array.IndexOf(Probability, max);
-            } 
+            }
         }
 
         public static WindDirectionStats From(float[] speed, WindDirection8[] values)
@@ -54,7 +54,7 @@ namespace WeatherStats
             }
             var count = new int[Directions.Length];
             var total = new double[Directions.Length];
-            for(int t = 0; t < values.Length; t++)
+            for (int t = 0; t < values.Length; t++)
             {
                 if (float.IsNormal(speed[t]))
                 {
@@ -66,7 +66,7 @@ namespace WeatherStats
             var valuesCount = count.Sum();
             return new WindDirectionStats(
                 count.Select(c => (float)c / valuesCount).ToArray(),
-                total.Select((c,i) => count[i] > 0 ? (float)(c / count[i]) : 0).ToArray());
+                total.Select((c, i) => count[i] > 0 ? (float)(c / count[i]) : 0).ToArray());
         }
     }
 }
