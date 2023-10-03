@@ -1,6 +1,8 @@
 ﻿using System.Diagnostics;
 using System.Text.Json;
 using CommandLine;
+using GeoJSON.Text.Feature;
+using GeoJSON.Text.Geometry;
 using PureHDF.Filters;
 using WeatherStats.Databases;
 using WeatherStats.Stats;
@@ -11,15 +13,15 @@ namespace WeatherStatsGenerator
     {
         static int Main(string[] args)
         {
-            var x = Enum.GetValues<WeatherStats.WindDirection8>();
             try
             {
-                return Parser.Default.ParseArguments<DigestOptions, AssembleOptions, AverageOptions, QueryOptions>(args)
+                return Parser.Default.ParseArguments<DigestOptions, AssembleOptions, AverageOptions, QueryOptions, ExportMaskOptions>(args)
                   .MapResult(
                     (DigestOptions opts) => Digest(opts),
                     (AssembleOptions opts) => Assemble(opts),
                     (AverageOptions opts) => Average(opts),
                     (QueryOptions opts) => Query(opts),
+                    (ExportMaskOptions opts) => ExportMask(opts),
                     errs => 1);
             }
             catch (Exception ex)
@@ -27,6 +29,47 @@ namespace WeatherStatsGenerator
                 Console.WriteLine(ex.ToString());
                 return 2;
             }
+        }
+
+        private static int ExportMask(ExportMaskOptions opts)
+        {
+            var maskRaw = ReadRawMask();
+            var polygons = new List<Polygon>();
+            for (var latitude = -89.5f; latitude < 90; latitude++)
+            {
+                var lat = GetRawMaskIndex(latitude);
+                if (maskRaw.TryGetValue(lat, out var lonMak))
+                {
+                    for (var longitude = 0.5f; longitude < 360.5; longitude++)
+                    {
+                        if (lonMak[GetRawMaskIndex(longitude)] != 0)
+                        {
+                            polygons.Add(new Polygon(new[]{new LineString(
+                                new[] {
+                                new Position(latitude - 0.5, longitude - 0.5),
+                                new Position(latitude - 0.5, longitude + 0.5),
+                                new Position(latitude + 0.5, longitude + 0.5),
+                                new Position(latitude + 0.5, longitude - 0.5),
+                                new Position(latitude - 0.5, longitude - 0.5)
+                                }
+                                )}));
+                        }
+                    }
+                }
+            }
+            File.WriteAllText(opts.Path!, JsonSerializer.Serialize(new FeatureCollection(new List<Feature> { new Feature(new MultiPolygon(polygons)) })));
+            return 0;
+        }
+
+        private static Dictionary<int, List<int>> ReadRawMask()
+        {
+            var maskRaw = new Dictionary<int, List<int>>();
+            using (var stream = typeof(Program).Assembly.GetManifestResourceStream("WeatherStatsGenerator.landmask.json"))
+            {
+                maskRaw = JsonSerializer.Deserialize<Dictionary<int, List<int>>>(stream!)!;
+            }
+
+            return maskRaw;
         }
 
         private static int Average(AverageOptions opts)
@@ -148,11 +191,7 @@ namespace WeatherStatsGenerator
 
         private static bool[][] GenerateMask(DataFiles fileset)
         {
-            var maskRaw = new Dictionary<int, List<int>>();
-            using (var stream = typeof(Program).Assembly.GetManifestResourceStream("WeatherStatsGenerator.landmask.json"))
-            {
-                maskRaw = JsonSerializer.Deserialize<Dictionary<int, List<int>>>(stream!)!;
-            }
+            var maskRaw = ReadRawMask();
             var items = 0;
             var mask = new bool[fileset.LatValues.Length][];
             for (var latIndex = 0; latIndex < fileset.LatValues.Length; ++latIndex)
