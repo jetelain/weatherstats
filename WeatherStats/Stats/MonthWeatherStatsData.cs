@@ -25,6 +25,15 @@ namespace WeatherStats.Stats
         [JsonPropertyName("wd")]
         public WindDirectionStats WindDirection { get; }
 
+        public static MonthWeatherStatsData Average(IEnumerable<MonthWeatherStatsData> enumerable)
+        {
+            return new MonthWeatherStatsData(
+                MinMaxAvg.Average(enumerable.Select(m => m.Humidity)),
+                MinMaxAvgStats.Average(enumerable.Select(m => m.Temperature)),
+                MinMaxAvgStats.Average(enumerable.Select(m => m.WindSpeed)),
+                WindDirectionStats.Average(enumerable.Select(m => m.WindDirection)));
+        }
+
         public static MonthWeatherStatsData From(float[] humidity, float[] temperature, float[] windSpeed, WindDirection8[] windDirection)
         {
             return new MonthWeatherStatsData(

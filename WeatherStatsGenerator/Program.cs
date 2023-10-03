@@ -11,12 +11,14 @@ namespace WeatherStatsGenerator
     {
         static int Main(string[] args)
         {
+            var x = Enum.GetValues<WeatherStats.WindDirection8>();
             try
             {
-                return Parser.Default.ParseArguments<DigestOptions, AssembleOptions, QueryOptions>(args)
+                return Parser.Default.ParseArguments<DigestOptions, AssembleOptions, AverageOptions, QueryOptions>(args)
                   .MapResult(
                     (DigestOptions opts) => Digest(opts),
                     (AssembleOptions opts) => Assemble(opts),
+                    (AverageOptions opts) => Average(opts),
                     (QueryOptions opts) => Query(opts),
                     errs => 1);
             }
@@ -25,6 +27,36 @@ namespace WeatherStatsGenerator
                 Console.WriteLine(ex.ToString());
                 return 2;
             }
+        }
+
+        private static int Average(AverageOptions opts)
+        {
+            Directory.CreateDirectory(opts.Target!);
+            var first = opts.Sources!.First();
+            var files = Directory.GetFiles(Path.Combine(first!, "assembly"), "*.json").Select(f => Path.GetFileName(f)).ToList();
+            Parallel.ForEach(files, file =>
+            {
+                Console.WriteLine(file);
+                var toAverage = opts.Sources!
+                    .Select(m => Path.Combine(m, "assembly", file))
+                    .Select(f => File.ReadAllText(f))
+                    .Select(c => JsonSerializer.Deserialize<List<YearWeatherStatsPoint>>(c)!)
+                    .ToList();
+                var avgCell = new List<YearWeatherStatsPoint>();
+                foreach (var coordinates in toAverage[0])
+                {
+                    var cellPerYear = toAverage.Select(s => s.First(c => c.Latitude == coordinates.Latitude && c.Longitude == coordinates.Longitude)).ToList();
+
+                    avgCell.Add(new YearWeatherStatsPoint(
+                        coordinates.Latitude,
+                        coordinates.Longitude,
+                        Enumerable.Range(0, 12).Select(m => MonthWeatherStatsData.Average(cellPerYear.Select(y => y.Months[m]))).ToArray()
+                        ));
+
+                }
+                File.WriteAllText(Path.Combine(opts.Target!, file), JsonSerializer.Serialize(avgCell));
+            });
+            return 0;
         }
 
         private static int Query(QueryOptions opts)

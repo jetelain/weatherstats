@@ -68,5 +68,13 @@ namespace WeatherStats.Stats
                 count.Select(c => (float)c / valuesCount).ToArray(),
                 total.Select((c, i) => count[i] > 0 ? (float)(c / count[i]) : 0).ToArray());
         }
+
+        internal static WindDirectionStats Average(IEnumerable<WindDirectionStats> enumerable)
+        {
+            return new WindDirectionStats(
+                    Enumerable.Range(0, 8).Select(d => enumerable.Select(i => i.Probability[d]).Average()).ToArray(),
+                    Enumerable.Range(0, 8).Select(d => enumerable.Select(i => i.AverageSpeed[d]).Average()).ToArray()
+                );
+        }
     }
 }

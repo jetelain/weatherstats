@@ -40,5 +40,13 @@ namespace WeatherStats.Stats
             }
             return From(result);
         }
+
+        internal static MinMaxAvgStats Average(IEnumerable<MinMaxAvgStats> enumerable)
+        {
+            return new MinMaxAvgStats(
+                MinMaxAvg.Average(enumerable.Select(i => i.Min)),
+                MinMaxAvg.Average(enumerable.Select(i => i.Avg)),
+                MinMaxAvg.Average(enumerable.Select(i => i.Max)));
+        }
     }
 }
