@@ -28,6 +28,10 @@ namespace WeatherStats.Databases
 
         public Task<YearWeatherStatsPoint?> GetStats(double latitude, double longitude)
         {
+            if (longitude < 0)
+            {
+                longitude += 360;
+            }
             var pointLatitude = Math.Round(Math.Round(latitude * 4) / 4, 2);
             var pointLongitude = Math.Round(Math.Round(longitude * 4) / 4, 2);
             return GetStatsExact((float)pointLatitude, (float)pointLongitude);
