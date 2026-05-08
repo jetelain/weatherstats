@@ -1,7 +1,7 @@
 ﻿using System.Text.Json;
-using WeatherStats.Stats;
+using Pmad.WeatherStats.Stats;
 
-namespace WeatherStats.Databases
+namespace Pmad.WeatherStats.Databases
 {
     /// <summary>
     /// <see cref="IWeatherStatsStorage"/> implementation that reads data files from the local file system.

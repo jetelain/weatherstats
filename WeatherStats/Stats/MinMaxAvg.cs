@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics;
 using System.Text.Json.Serialization;
 
-namespace WeatherStats.Stats
+namespace Pmad.WeatherStats.Stats
 {
     /// <summary>
     /// Holds the minimum, average, and maximum of a set of float values.

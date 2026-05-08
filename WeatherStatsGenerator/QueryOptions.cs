@@ -1,6 +1,6 @@
 ﻿using CommandLine;
 
-namespace WeatherStatsGenerator
+namespace Pmad.WeatherStatsGenerator
 {
     [Verb("query", HelpText = "Query a data point from assembly JSON.")]
     internal class QueryOptions

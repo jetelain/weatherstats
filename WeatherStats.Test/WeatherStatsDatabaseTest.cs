@@ -1,7 +1,7 @@
-using WeatherStats.Databases;
-using WeatherStats.Stats;
+using Pmad.WeatherStats.Databases;
+using Pmad.WeatherStats.Stats;
 
-namespace WeatherStats.Test
+namespace Pmad.WeatherStats.Test
 {
     public class WeatherStatsDatabaseTest
     {

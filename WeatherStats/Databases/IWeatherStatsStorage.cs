@@ -1,6 +1,6 @@
-﻿using WeatherStats.Stats;
+﻿using Pmad.WeatherStats.Stats;
 
-namespace WeatherStats.Databases
+namespace Pmad.WeatherStats.Databases
 {
     /// <summary>
     /// Abstraction over a storage back-end that can load weather statistics data files.

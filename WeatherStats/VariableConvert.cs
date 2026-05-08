@@ -1,6 +1,6 @@
 ﻿using System.Numerics;
 
-namespace WeatherStats
+namespace Pmad.WeatherStats
 {
     /// <summary>
     /// Utility methods for converting between meteorological units and derived quantities.

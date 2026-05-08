@@ -1,6 +1,6 @@
 ﻿using CommandLine;
 
-namespace WeatherStatsGenerator
+namespace Pmad.WeatherStatsGenerator
 {
     [Verb("average", HelpText = "Takes year data to create multi-year averages.")]
     public class AverageOptions

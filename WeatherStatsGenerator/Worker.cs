@@ -2,10 +2,10 @@
 using System.Numerics;
 using PureHDF;
 using PureHDF.Selections;
-using WeatherStats;
-using WeatherStats.Stats;
+using Pmad.WeatherStats;
+using Pmad.WeatherStats.Stats;
 
-namespace WeatherStatsGenerator
+namespace Pmad.WeatherStatsGenerator
 {
     internal class Worker
     {

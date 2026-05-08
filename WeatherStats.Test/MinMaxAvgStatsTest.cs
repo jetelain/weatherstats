@@ -1,6 +1,6 @@
-using WeatherStats.Stats;
+using Pmad.WeatherStats.Stats;
 
-namespace WeatherStats.Test
+namespace Pmad.WeatherStats.Test
 {
     public class MinMaxAvgStatsTest
     {

@@ -3,13 +3,19 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 18
 VisualStudioVersion = 18.5.11723.231 stable
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WeatherStats", "WeatherStats\WeatherStats.csproj", "{7EB3E6BE-67D4-6423-8421-CEF170031EE4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pmad.WeatherStats", "WeatherStats\Pmad.WeatherStats.csproj", "{7EB3E6BE-67D4-6423-8421-CEF170031EE4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WeatherStats.Test", "WeatherStats.Test\WeatherStats.Test.csproj", "{A589CEAD-70A2-DB3D-383A-F7CED3106C23}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pmad.WeatherStats.Test", "WeatherStats.Test\Pmad.WeatherStats.Test.csproj", "{A589CEAD-70A2-DB3D-383A-F7CED3106C23}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WeatherStatsGenerator", "WeatherStatsGenerator\WeatherStatsGenerator.csproj", "{FC9AA103-F7BD-6FD3-D0C1-03A5E30DD0FB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pmad.WeatherStatsGenerator", "WeatherStatsGenerator\Pmad.WeatherStatsGenerator.csproj", "{FC9AA103-F7BD-6FD3-D0C1-03A5E30DD0FB}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Github", "Github", "{B6E2EB36-6E5B-440E-8F7B-7BE8D6EC2F6B}"
+	ProjectSection(SolutionItems) = preProject
+		.github\workflows\dotnet-linux-pr.yml = .github\workflows\dotnet-linux-pr.yml
+		.github\workflows\dotnet-linux-pub.yml = .github\workflows\dotnet-linux-pub.yml
+		.github\workflows\dotnet-linux.yml = .github\workflows\dotnet-linux.yml
+		README.md = README.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

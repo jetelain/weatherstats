@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics;
 using System.Text.Json.Serialization;
 
-namespace WeatherStats.Stats
+namespace Pmad.WeatherStats.Stats
 {
     /// <summary>
     /// Holds wind direction statistics: occurrence probability and average speed per direction.

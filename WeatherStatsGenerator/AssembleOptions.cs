@@ -1,6 +1,6 @@
 ﻿using CommandLine;
 
-namespace WeatherStatsGenerator
+namespace Pmad.WeatherStatsGenerator
 {
     [Verb("assemble", HelpText = "Takes months based JSON to generate year based JSON.")]
     public class AssembleOptions

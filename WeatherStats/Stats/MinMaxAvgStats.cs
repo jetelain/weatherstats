@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics;
 using System.Text.Json.Serialization;
 
-namespace WeatherStats.Stats
+namespace Pmad.WeatherStats.Stats
 {
     /// <summary>
     /// Holds statistics (min, average, max) where each of those is itself a <see cref="MinMaxAvg"/>.

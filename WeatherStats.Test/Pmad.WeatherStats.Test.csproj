@@ -22,7 +22,7 @@
 	</ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\WeatherStats\WeatherStats.csproj" />
+    <ProjectReference Include="..\WeatherStats\Pmad.WeatherStats.csproj" />
   </ItemGroup>
 
 </Project>

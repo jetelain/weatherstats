@@ -4,10 +4,10 @@ using CommandLine;
 using GeoJSON.Text.Feature;
 using GeoJSON.Text.Geometry;
 using PureHDF.Filters;
-using WeatherStats.Databases;
-using WeatherStats.Stats;
+using Pmad.WeatherStats.Databases;
+using Pmad.WeatherStats.Stats;
 
-namespace WeatherStatsGenerator
+namespace Pmad.WeatherStatsGenerator
 {
     internal class Program
     {

@@ -1,14 +1,19 @@
-# WeatherStats
+# Pmad.WeatherStats
 
-A .NET 8 library for reading ERA5 average weather statistics from a local directory or a remote HTTP database.  
+[![NuGet](https://img.shields.io/nuget/v/Pmad.WeatherStats)](https://www.nuget.org/packages/Pmad.WeatherStats)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](../LICENSE)
+
+A .NET 8 library for reading ERA5 average weather statistics from a local directory or a remote HTTP database. 
+
+Raw data need to be converted using the `Pmad.WeatherStatsGenerator` tool (see the [main README](README.md) for details). 
+
 The public database is hosted at **https://weatherdata.pmad.net/ERA5AVG/**. It provides averages for 2010-2020.
 
 ---
 
 ## Installation
 
-Add the `WeatherStats` project (or its compiled assembly) to your solution.  
-The library has no external NuGet dependencies.
+Add the `Pmad.WeatherStats` package to your project.
 
 ---
 
@@ -17,7 +22,7 @@ The library has no external NuGet dependencies.
 ### 1. Open a database
 
 ```csharp
-using WeatherStats.Databases;
+using Pmad.WeatherStats.Databases;
 
 // From the public HTTP database
 var db = WeatherStatsDatabase.Create("https://weatherdata.pmad.net/ERA5AVG/");
@@ -141,7 +146,7 @@ Eight-point compass enum. Each value represents the direction the wind is blowin
 ### `VariableConvert`
 
 ```csharp
-using WeatherStats;
+using Pmad.WeatherStats;
 
 // Relative humidity from dew point and air temperature (August-Roche-Magnus approximation)
 float rh = VariableConvert.RelativeHumidity(dewpointCelsius, temperatureCelsius);
@@ -161,8 +166,8 @@ WindDirection8 dir = VariableConvert.GetWindDirection8(new Vector2(eastward, nor
 Implement `IWeatherStatsStorage` to load data from any source (cloud blob storage, embedded resources, etc.):
 
 ```csharp
-using WeatherStats.Databases;
-using WeatherStats.Stats;
+using Pmad.WeatherStats.Databases;
+using Pmad.WeatherStats.Stats;
 
 public class MyStorage : IWeatherStatsStorage
 {

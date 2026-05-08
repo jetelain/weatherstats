@@ -1,7 +1,7 @@
 ﻿using System.Collections.Concurrent;
-using WeatherStats.Stats;
+using Pmad.WeatherStats.Stats;
 
-namespace WeatherStats.Databases
+namespace Pmad.WeatherStats.Databases
 {
     /// <summary>
     /// High-level facade for accessing ERA5 average weather statistics.

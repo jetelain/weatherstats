@@ -1,7 +1,7 @@
 ﻿using PureHDF;
 using PureHDF.VOL.Native;
 
-namespace WeatherStatsGenerator
+namespace Pmad.WeatherStatsGenerator
 {
     internal sealed class DataFiles
     {

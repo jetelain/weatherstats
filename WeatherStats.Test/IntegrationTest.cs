@@ -1,6 +1,6 @@
-using WeatherStats.Databases;
+using Pmad.WeatherStats.Databases;
 
-namespace WeatherStats.Test
+namespace Pmad.WeatherStats.Test
 {
     /// <summary>
     /// Integration tests that hit the live ERA5AVG database at https://weatherdata.pmad.net/ERA5AVG/

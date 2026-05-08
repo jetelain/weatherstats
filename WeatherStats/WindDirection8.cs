@@ -1,4 +1,4 @@
-﻿namespace WeatherStats
+﻿namespace Pmad.WeatherStats
 {
     /// <summary>
     /// Eight-point compass wind direction. Each value indicates the direction the wind is blowing

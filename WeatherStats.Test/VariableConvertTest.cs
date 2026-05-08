@@ -1,6 +1,6 @@
 ﻿using System.Numerics;
 
-namespace WeatherStats.Test
+namespace Pmad.WeatherStats.Test
 {
     public class VariableConvertTest
     {

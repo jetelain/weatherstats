@@ -1,6 +1,6 @@
 ﻿using CommandLine;
 
-namespace WeatherStatsGenerator
+namespace Pmad.WeatherStatsGenerator
 {
     [Verb("export-mask", HelpText = "Export mask to GeoJSON.")]
     internal class ExportMaskOptions

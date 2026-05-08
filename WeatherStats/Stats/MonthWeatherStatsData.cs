@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace WeatherStats.Stats
+namespace Pmad.WeatherStats.Stats
 {
     /// <summary>
     /// Weather statistics for a single calendar month at a geographic point.

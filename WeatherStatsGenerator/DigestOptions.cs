@@ -1,6 +1,6 @@
 ﻿using CommandLine;
 
-namespace WeatherStatsGenerator
+namespace Pmad.WeatherStatsGenerator
 {
     [Verb("digest", HelpText = "Transform HC/HDF/NetCDF files into month stats JSON files. Takes 2 hours or more per month.")]
     public class DigestOptions

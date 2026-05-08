@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace WeatherStats.Stats
+namespace Pmad.WeatherStats.Stats
 {
     /// <summary>
     /// Associates a geographic point (latitude/longitude) with its full-year monthly weather statistics.

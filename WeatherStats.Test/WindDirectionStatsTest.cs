@@ -1,7 +1,7 @@
-using WeatherStats.Stats;
-using WeatherStats;
+using Pmad.WeatherStats.Stats;
+using Pmad.WeatherStats;
 
-namespace WeatherStats.Test
+namespace Pmad.WeatherStats.Test
 {
     public class WindDirectionStatsTest
     {
