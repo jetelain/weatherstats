@@ -1,7 +1,8 @@
 ﻿namespace WeatherStats
 {
     /// <summary>
-    /// Wind direction (it's the opposite of his origin)
+    /// Eight-point compass wind direction. Each value indicates the direction the wind is blowing
+    /// <em>toward</em> (opposite of the origin).
     /// </summary>
     public enum WindDirection8
     {
